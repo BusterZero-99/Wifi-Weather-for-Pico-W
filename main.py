@@ -61,10 +61,10 @@ def displayWeather(city):
     wind_speed = weather_data.get("wind", {}).get("speed", "N/A")
     weather_description = weather_data.get("weather", [{}])[0].get("description", "N/A")
     
-    LCD.text(f"City: {city}", 20, 45, colour(0,255,255))
-    LCD.text(f"Temp: {temperature} Degrees C", 20, 55, colour(0,255,255))
-    LCD.text(f"Wind speed: {wind_speed} m/s", 20, 65, colour(0,255,255))
-    LCD.text(f"Weather: {weather_description}", 20, 75, colour(0,255,255))
+    LCD.write_text(f"City: {city}", 20, 45, 1, colour(0,255,255))
+    LCD.write_text(f"Temp: {temperature} Degrees C", 20, 55, 1, colour(0,255,255))
+    LCD.write_text(f"Wind speed: {wind_speed} m/s", 20, 65, 1, colour(0,255,255))
+    LCD.write_text(f"Weather: {weather_description}", 20, 75, 1, colour(0,255,255))
     response.close()
     
 
@@ -125,10 +125,10 @@ def drawBasics():
     LCD.pixel(0,239,LCD.white)   # LB
     LCD.pixel(239,0,LCD.white)   # RT
     LCD.pixel(239,239,LCD.white) # RB
-    LCD.text("Weather and Time app", 20, 10, colour(0,0,255))
-    LCD.text(f"Hold A for city {secrets["city2"]}.", 20, 180, colour(255, 0, 255))
-    LCD.text(f"Hold B for city {secrets["city3"]}.", 20, 190, colour(255, 0, 255))
-    LCD.text("Press A & Y to quit.", 20, 220, colour(255,0,0))
+    LCD.write_text("Weather and Time app", 20, 10, 1, colour(0,0,255))
+    LCD.write_text(f"Hold A for city {secrets["city2"]}.", 20, 180, 1, colour(255, 0, 255))
+    LCD.write_text(f"Hold B for city {secrets["city3"]}.", 20, 190, 1, colour(255, 0, 255))
+    LCD.write_text("Press A & Y to quit.", 20, 220, 1, colour(255,0,0))
 
 running = True
 
@@ -138,7 +138,7 @@ while(running):
     
     try: updateTime()
     except: pass
-    LCD.text(f"Time {time.localtime()[3]+(1 if is_dst else 0)} : {time.localtime()[4]} : {time.localtime()[5]}", 20, 25, colour(0,255,255))
+    LCD.write_text(f"Time {time.localtime()[3]+(1 if is_dst else 0)} : {time.localtime()[4]} : {time.localtime()[5]}", 20, 25, 1, colour(0,255,255))
     
     if keyA.value() == 0:
         LCD.fill_rect(20,45,200,40,colour(40,40,40))
@@ -160,7 +160,7 @@ while(running):
 LCD.fill(0)
 for r in range(10):
     ring(120,120,60+r,colour(255,255,0))
-LCD.text("Closing", 95, 115, colour(255,0,0))
+LCD.write_text("Closing", 65, 115, 2, colour(255,0,0))
 LCD.show()
 # Tidy up
 utime.sleep(3)
