@@ -147,3 +147,5 @@ class LCD_1inch3(framebuf.FrameBuffer):
         self.cs(0)
         self.spi.write(self.buffer)
         self.cs(1)
+
+LCD = LCD_1inch3()
