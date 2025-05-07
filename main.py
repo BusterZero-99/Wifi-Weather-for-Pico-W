@@ -14,7 +14,7 @@ MOSI = 11
 SCK = 10
 CS = 9
 
-# Connect to Wi-Fi
+# Connect to Wi-Fi (replace with your credentials)
 wlan = network.WLAN(network.STA_IF)
 wlan.active(True)
 wlan.connect(secrets["ssid"], secrets["pw"])
@@ -26,12 +26,27 @@ print("Connected to Wi-Fi")
 
 ntptime.host = secrets["ntptimehost"]
 
+is_dst = False
+
 def updateTime():
+    global is_dst
     try:
         # Sync time with NTP server
         ntptime.settime()
     except:
         print(f"NTP Time connnecting with {ntptime.host} is not working.")
+    
+    try:
+        url = f"http://api.timezonedb.com/v2.1/get-time-zone?key={secrets['timedb_key']}&format=json&by=zone&zone=Europe/London"
+        response = urequests.get(url)
+        timezone_data = response.json()
+        response.close()
+
+        # Extract DST status
+        is_dst = timezone_data.get("dst", False)
+    except:
+        print("Unable to communicate with api.timezonedb.com.")
+    
 
 updateTime()
 # Get current time
@@ -121,8 +136,9 @@ while(running):
     displayWeather(secrets["city1"])
     drawBasics()
     
-    updateTime()
-    LCD.text(f"Time {time.localtime()[3]} : {time.localtime()[4]} : {time.localtime()[5]}", 20, 25, colour(0,255,255))
+    try: updateTime()
+    except: pass
+    LCD.text(f"Time {time.localtime()[3]+(1 if is_dst else 0)} : {time.localtime()[4]} : {time.localtime()[5]}", 20, 25, colour(0,255,255))
     
     if keyA.value() == 0:
         LCD.fill_rect(20,45,200,40,colour(40,40,40))
