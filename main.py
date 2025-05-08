@@ -14,7 +14,7 @@ MOSI = 11
 SCK = 10
 CS = 9
 
-# Connect to Wi-Fi (replace with your credentials)
+# Connect to Wi-Fi
 wlan = network.WLAN(network.STA_IF)
 wlan.active(True)
 wlan.connect(secrets["ssid"], secrets["pw"])
