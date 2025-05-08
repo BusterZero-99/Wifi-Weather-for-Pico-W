@@ -8,7 +8,6 @@ MOSI = 11
 SCK = 10
 CS = 9
 
-
 class LCD_1inch3(framebuf.FrameBuffer):
     def __init__(self):
         self.width = 240
